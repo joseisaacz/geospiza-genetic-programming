@@ -14,10 +14,10 @@
 
 ;; Dominio: vacio
 ;; Codominio: x y o un numero natural entre 0 y 1000000
-(define x-y-#
+(define x-y-num
   (lambda ()
-    (cond ((= (random 2) 0) (car '(x)))
-          ((= (random 2) 1) (car '(y)) )
+    (cond ((= (random 2) 0) 'x)
+          ((= (random 2) 1)  'y)
           (else (random 10000)))))
 
 ; Dominio: vacio
@@ -31,11 +31,17 @@
 ;codominio: de forma aleatorio se forma un arbol de expresion 
 (define arbolaleatorio
   (lambda()
-    (cond ((es-hoja?) (x-y-#))
+    (cond ((es-hoja?) (x-y-num))
           ((list(random-op)
                 (arbolaleatorio)
                 (arbolaleatorio))))))
 
 
+;Dominio: recibe un numero entero mayor que cero
+;Codominio: lista con poblacion inicial (arboles de expresion)
+(define poblacion
+  (lambda (n)
+    (cond ((= n 1) (list(arbolaleatorio)))
+          ((append (list(arbolaleatorio)) (poblacion (- n 1)))))))
 
 
