@@ -1,22 +1,13 @@
-(define operadores '( + - * expt / log))
 
 ;;Dominio: un numero n
 ;;Codominio: devuelve un numero random entre 1 y n
-(define randOperadores
-  (lambda (n)
-  (+ 1 (random n))))
+(define random-op
+  (lambda ()
+  (list-ref '(+ - / * expt log) (random 6))))
 
-;;Dominio: Listas de cualquier tamano y un numero N natural mayor que 0
-;;Codominio: Elemento de la Posicion N 
-(define devuelvePos
-  (lambda (L n)
-    (cond ((null? L ) '())
-          ((equal? 1 n) (car L))
-          ((devuelvePos (cdr L) (- n 1) )))))
 
 ;;Dominio: arboles binarios de expresion y numeros a b
 ;;Codominio: expresion evaluada con a b
-
 (define evalua
   (lambda (L a b)
     (eval (list (cons 'lambda (cons '(x y) (list L))) a b))))
@@ -25,8 +16,26 @@
 ;; Codominio: x y o un numero natural entre 0 y 1000000
 (define x-y-#
   (lambda ()
-    (cond ((= (random 3) 0) '(x))
-          ((= (random 3) 1) '(y) )
-          ((random 1000000)))))
+    (cond ((= (random 2) 0) (car '(x)))
+          ((= (random 2) 1) (car '(y)) )
+          (else (random 10000)))))
+
+; Dominio: vacio
+; Codominio: booleano de si el ramdon es menor que 50
+(define es-hoja?
+  (lambda ()
+    (< (random 100) 50 )))
+
+
+;dominio: vacio
+;codominio: de forma aleatorio se forma un arbol de expresion 
+(define arbolaleatorio
+  (lambda()
+    (cond ((es-hoja?) (x-y-#))
+          ((list(random-op)
+                (arbolaleatorio)
+                (arbolaleatorio))))))
+
+
 
 
