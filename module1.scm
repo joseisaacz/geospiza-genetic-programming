@@ -45,3 +45,14 @@
           ((append (list(arbolaleatorio)) (poblacion (- n 1)))))))
 
 
+;;Dominio: archivo con los puntos x y z 
+;;Codominio: lista con los puntos del archivo
+
+(define lista-numeros
+ (call-with-input-file "f1.txt"
+  (lambda (p)
+    (let f ((x (read p)))
+      (if (eof-object? x )
+          '()
+          (cons x (f (read p))))))))
+   
