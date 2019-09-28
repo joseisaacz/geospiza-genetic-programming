@@ -44,6 +44,11 @@
     (cond ((= n 1) (list(arbolaleatorio)))
           ((append (list(arbolaleatorio)) (poblacion (- n 1)))))))
 
+;(define inicial
+ ; (lambda (n)
+  ;  (cond ((zero? n) '())
+   ;       (else
+    ;       (cons(list(arbolaleatorio)) (poblacion (- n 1)))))))
 
 ;;Dominio: archivo con los puntos x y z 
 ;;Codominio: lista con los puntos del archivo
