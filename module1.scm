@@ -44,9 +44,24 @@
     (cond ((= n 1) (list(arbolaleatorio)))
           ((append (list(arbolaleatorio)) (poblacion (- n 1)))))))
 
-;(define inicial
- ; (lambda (n)
-  ;  (cond ((zero? n) '())
-   ;       (else
-    ;       (cons(list(arbolaleatorio)) (poblacion (- n 1)))))))
+(define inicial
+  (lambda (n)
+    (cond ((zero? n) '())
+          (else
+          (cons(arbolaleatorio) (poblacion (- n 1)))))))
 
+
+(let ((p (open-input-file "inputs.txt")))
+  (let f ((x (read p)))
+    (if (eof-object? x)
+        (begin
+          (close-input-port p)
+          '())
+        (cons x (f (read p))))))
+
+(call-with-input-file "inputs.txt"
+  (lambda (p)
+    (let f ((x (read p)))
+      (if (eof-object? x)
+          '()
+          (cons x (f (read p)))))))
