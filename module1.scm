@@ -51,7 +51,7 @@
           (cons(arbolaleatorio) (poblacion (- n 1)))))))
 
 
-(let ((p (open-input-file "inputs.txt")))
+(let ((p (open-input-file "f1.txt")))
   (let f ((x (read p)))
     (if (eof-object? x)
         (begin
@@ -88,3 +88,21 @@
 (define mutacion?
   (lambda ()
     (< (random 100) 5)))
+
+
+(define eval-poblacion
+  (lambda (poblacion x y)
+    (map (lambda (n) (evalua n x y)) poblacion)))
+
+(define dif-puntos
+  (lambda (L z)
+    (map (lambda (zn) (abs (- z zn))) L)))
+
+(define f
+  (lambda (Lx Ly Lz poblacion)
+    (map (lambda (x y z) (dif-puntos(eval-poblacion poblacion x y) z)) Lx Ly Lz)))
+
+(define f2
+  (lambda (Lx Ly Lz poblacion)
+    (map (lambda (n) (apply + n)) (f Lx Ly Lz poblacion))))
+    
