@@ -14,11 +14,11 @@
 
 ;; Dominio: vacio
 ;; Codominio: x y o un numero natural entre 0 y 1000000
-(define x-y-num
+(define xynum
   (lambda ()
     (cond ((= (random 2) 0) 'x)
           ((= (random 2) 1)  'y)
-          (else (random 10000)))))
+          (else (random 100)))))
 
 ; Dominio: vacio
 ; Codominio: booleano de si el ramdon es menor que 50
@@ -31,7 +31,7 @@
 ;codominio: de forma aleatorio se forma un arbol de expresion 
 (define arbolaleatorio
   (lambda()
-    (cond ((es-hoja?) (x-y-num))
+    (cond ((es-hoja?) (xynum))
           ((list(random-op)
                 (arbolaleatorio)
                 (arbolaleatorio))))))
@@ -44,11 +44,20 @@
     (cond ((= n 1) (list(arbolaleatorio)))
           ((append (list(arbolaleatorio)) (poblacion (- n 1)))))))
 
-;(define inicial
- ; (lambda (n)
-  ;  (cond ((zero? n) '())
-   ;       (else
-    ;       (cons(list(arbolaleatorio)) (poblacion (- n 1)))))))
+(define inicial
+  (lambda (n)
+    (cond ((zero? n) '())
+          (else
+          (cons(arbolaleatorio) (poblacion (- n 1)))))))
+
+
+(let ((p (open-input-file "inputs.txt")))
+  (let f ((x (read p)))
+    (if (eof-object? x)
+        (begin
+          (close-input-port p)
+          '())
+        (cons x (f (read p))))))
 
 ;;Dominio: archivo con los puntos x y z 
 ;;Codominio: lista con los puntos del archivo
@@ -60,4 +69,22 @@
       (if (eof-object? x )
           '()
           (cons x (f (read p))))))))
-   
+
+;Dominio: 2 arboles de expresion
+;Codominio: el cruce de los 2 arboles
+(define cruce
+  (lambda (arbol1 arbol2)
+    (cond ((null? arbol1) arbol2)
+          ((null? arbol2) arbol2)
+          ((mutacion?) (list (car arbol1)
+                             (arbolaleatorio)
+                             (caddr arbol2)))
+          (else (list (car arbol1)
+                      (cadr arbol1)
+                      (caddr arbol2))))))
+
+;Dominio: vacio
+;Codominio: posibilidad de que haya mutacion menor que 5%
+(define mutacion?
+  (lambda ()
+    (< (random 100) 5)))
