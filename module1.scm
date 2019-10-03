@@ -75,7 +75,7 @@
 (define cruce
   (lambda (arbol1 arbol2)
     (cond ((null? arbol1) arbol2)
-          ((null? arbol2) arbol2)
+          ((null? arbol2) arbol1)
           ((mutacion?) (list (car arbol1)
                              (arbolaleatorio)
                              (caddr arbol2)))
