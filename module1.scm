@@ -51,24 +51,46 @@
           (cons(arbolaleatorio) (poblacion (- n 1)))))))
 
 
-(let ((p (open-input-file "f1.txt")))
-  (let f ((x (read p)))
-    (if (eof-object? x)
-        (begin
-          (close-input-port p)
-          '())
-        (cons x (f (read p))))))
+;;(let ((p (open-input-file "f1.txt")))
+;;  (let f ((x (read p)))
+;;    (if (eof-object? x)
+;;        (begin
+;;          (close-input-port p)
+;;          '())
+;;        (cons x (f (read p))))))
 
-;;Dominio: archivo con los puntos x y z 
-;;Codominio: lista con los puntos del archivo
 
-(define lista-numeros
- (call-with-input-file "f1.txt"
+
+;;Dominio: archivo con los puntos  x 
+;;Codominio: lista con los puntos x del archivo
+(define f1-x
+ (call-with-input-file "f1_x.txt"
   (lambda (p)
     (let f ((x (read p)))
       (if (eof-object? x )
           '()
           (cons x (f (read p))))))))
+
+;;Dominio: archivo con los puntos  y 
+;;Codominio: lista con los puntos y del archivo
+(define f1-y
+ (call-with-input-file "f1_y.txt"
+  (lambda (p)
+    (let f ((x (read p)))
+      (if (eof-object? x )
+          '()
+          (cons x (f (read p))))))))
+
+;;Dominio: archivo con los puntos  z 
+;;Codominio: lista con los puntos z del archivo
+(define f1-z
+ (call-with-input-file "f1_z.txt"
+  (lambda (p)
+    (let f ((x (read p)))
+      (if (eof-object? x )
+          '()
+          (cons x (f (read p))))))))
+
 
 ;Dominio: 2 arboles de expresion
 ;Codominio: el cruce de los 2 arboles
