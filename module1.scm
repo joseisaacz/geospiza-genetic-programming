@@ -18,7 +18,7 @@
   (lambda ()
     (cond ((= (random 2) 0) 'x)
           ((= (random 2) 1)  'y)
-          (else (random 100)))))
+          (else (random 10)))))
 
 ; Dominio: vacio
 ; Codominio: booleano de si el ramdon es menor que 50
@@ -31,11 +31,13 @@
 ;codominio: de forma aleatorio se forma un arbol de expresion 
 (define arbolaleatorio
   (lambda()
-    (cond ((es-hoja?) (xynum))
-          ((list(random-op)
-                (arbolaleatorio)
-                (arbolaleatorio))))))
+    (list (random-op) (arbol2) (arbol2))))
 
+
+(define arbol2
+  (lambda()
+    (cond ((es-hoja?) (xynum))
+          (else (arbolaleatorio)))))
 
 ;Dominio: recibe un numero entero mayor que cero
 ;Codominio: lista con poblacion inicial (arboles de expresion)
@@ -63,7 +65,7 @@
 
 ;;Dominio: archivo con los puntos  x 
 ;;Codominio: lista con los puntos x del archivo
-(define f1-x
+(define fx
  (call-with-input-file "f1_x.txt"
   (lambda (p)
     (let f ((x (read p)))
@@ -73,7 +75,7 @@
 
 ;;Dominio: archivo con los puntos  y 
 ;;Codominio: lista con los puntos y del archivo
-(define f1-y
+(define fy
  (call-with-input-file "f1_y.txt"
   (lambda (p)
     (let f ((x (read p)))
@@ -83,7 +85,7 @@
 
 ;;Dominio: archivo con los puntos  z 
 ;;Codominio: lista con los puntos z del archivo
-(define f1-z
+(define fz
  (call-with-input-file "f1_z.txt"
   (lambda (p)
     (let f ((x (read p)))
@@ -111,20 +113,66 @@
   (lambda ()
     (< (random 100) 5)))
 
-
 (define eval-poblacion
   (lambda (poblacion x y)
     (map (lambda (n) (evalua n x y)) poblacion)))
 
 (define dif-puntos
   (lambda (L z)
-    (map (lambda (zn) (abs (- z zn))) L)))
+    (map (lambda (zn)
+           (cond ((real? zn) (abs (- z zn)))
+                 (else (random 100000)))) L)))
 
-(define f
-  (lambda (Lx Ly Lz poblacion)
-    (map (lambda (x y z) (dif-puntos(eval-poblacion poblacion x y) z)) Lx Ly Lz)))
+(define f1
+  (lambda (poblacion)
+    (map (lambda (x y z) (dif-puntos(eval-poblacion poblacion x y) z)) fx fy fz)))
 
 (define f2
-  (lambda (Lx Ly Lz poblacion)
-    (map (lambda (n) (apply + n)) (f Lx Ly Lz poblacion))))
-    
+  (lambda (poblacion)
+    (map (lambda (n) (round (inexact->exact n))) (map (lambda (n) (apply + n)) (transpuesta(f1 poblacion))))))
+
+(define transpuesta
+  (lambda (mat)
+    (cond ((null? mat) '())
+          ((null? (car mat)) '())
+          (else (cons (map car mat)
+                      (transpuesta (map cdr mat)))))))
+
+(define ruleta
+  (lambda (P L sum n)
+    (cond ((null? P) '())
+          ((null? (cdr L)) (list(list (car P) (car L))))
+          (else (cons (list (car P) (+ n (car L))) (ruleta (cdr P) (cdr L) sum (+ n (car L))))))))
+
+
+(define uso-ruleta
+  (lambda (poblacion f2)
+    (ruleta poblacion (map (lambda (n) (* 10 (- 1 (/ n (apply + f2))))) f2) (apply + f2) 0)))
+
+
+(define escoger
+  (lambda (ruleta random)
+    (cond ((null? (cdr ruleta)) (caar ruleta))
+          ((< random (car(cdar ruleta))) (caar ruleta))
+          (else (escoger (cdr ruleta) random)))))
+
+(define w-ruleta
+  (lambda (poblacion)
+    (uso-ruleta poblacion (f2 poblacion))))
+
+
+(define escoger-random
+  (lambda (poblacion)
+    (escoger (w-ruleta poblacion) (random (* 10 (length poblacion))))))
+
+
+(define cruzamiento
+  (lambda (poblacion tam)
+    (cond ((equal? 0 tam) '())
+    (else (append (list (cruce (escoger-random poblacion) (escoger-random poblacion))) (cruzamiento poblacion (- tam 1)))))))
+
+
+(define infinito
+  (lambda (poblacion)
+    (infinito(w-ruleta (cruzamiento poblacion (length poblacion))))))
+        
