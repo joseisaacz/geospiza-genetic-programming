@@ -74,14 +74,60 @@ Para esto se puede utilizar varios recursos redes neuronales, o como en esta oca
 \item Generaciones: son el producto de los cruces de las población, entre más generaciones haya se espera que sea más precisa la aproximación a la respuesta correcta.\\
 \item Elitismo: es una técnica utilizada, cuando se resuelve un problema con la metodología generacional, en la cual se asegura la sobrevivencia del mejor individuo haciendo que esté en la siguiente generación para así no perder la buenas caracteristicas del mismo en la siguiente generación. \\
 \end{itemize}
-
-
-
-
-
-
+Con lo anterior se puede apreciar de una mejor manera el rumbo por el cual el problema se iba resolver. 
+Se puede apreciar como el problema se vale de la técnicas de selección natural para la escogencia del mejor individuo de la población ya que la implentación de la función fitness es crucial y donde tenemos que garantizar que la evaluación dada, no va llegar a una situación en la que se quede estancada y las generaciones no se acerquen a el punto esperado.\\\\
+Otro detalle que se debe de considerar es la escongencia del tamaño de la población ya que como el profesor explicaba, si la población es muy pequeña existe poco pool genético, lo que genera endogamia, y por el contrario si se da que la población es  muy grande lo que pasa es los individuos de mejores características, si son pocos, se ven opacados porque la población es tan grande que pasan desapercibidos entre toda la población. Por lo que hay que encontrar un tamaño correcto de población, esto es algo que el equipo de desarrollador no sabe, ya que no se encontró una métrica para la escogencia del tamaño de la población.\\\
+\pagebreak
 \section{Especificacion de la solución}
-	 
+ Este apartado se describirá, la implementación de cada uno de los códigos que generan el programa, para encontrar la solución.\\
+Por recomendación del profesor, la solución se separó en pequeñas funciones, que cumplen con una tarea específica.\\\\
+En la especificación del proyecto, se dice que los individuos de la población (árboles binarios de expresión) y que los operadores que pueden llegar a formar la expresiones son los siguientes: $(+$ $-$ $/$ $*$ $expt$ $log)$. Por lo que siguiente función es para escoger uno de los operadores de forma aleatoria.  
+\begin{verbatim}
+(define random-op
+  (lambda ()
+  (list-ref '(+ - / * expt log) (random 6))))
+\end{verbatim}
+ La siguiente función es la que se utiliza para evaluar los arboles binarios de expresión, esto haciendo del uso del eval de scheme. 
+ \begin{verbatim}
+ (define evalua
+  (lambda (L a b)
+    (eval (list (cons 'lambda (cons '(x y) (list L))) a b))))
+ \end{verbatim}
+ La función que sigue nos ofrece de forma aleatoria el retorno de los valores aleatorios de x y o un número, que fue utilizado en la función de crear el árbol.
+ \begin{verbatim}
+ (define xynum
+  (lambda ()
+    (cond ((= (random 2) 0) 'x)
+          ((= (random 2) 1)  'y)
+          (else (random 10)))))
+\end{verbatim}
+ La función de que sigue es la que de forma aleatoria se define si el elemento es una hoja. 
+ \begin{verbatim}
+ (define es-hoja?
+  (lambda ()
+    (< (random 100) 50 )))
+ \end{verbatim}
+ Las siguientes funciones son las que se utilizaron para generar el árbol de expresión.
+ \begin{verbatim}
+(define arbolaleatorio
+	(lambda ()
+	 (list(random-op) (arbol2) (arbol2))))
+\end{verbatim}
+\begin{verbatim}
+(define arbol2
+	(lambda ()
+		(cond ((es-hoja?) (xynum))
+		(else (arbolaleatorio)))))
+\end{verbatim}  
+La siguiente función es la que crea la población inicial con la que se inicia la evaluación de individuos para intentar llegar a $"adivinar"$ la función.
+\begin{verbatim}
+(define inicial
+  (lambda (n)
+    (cond ((zero? n) '())
+          (else
+          (cons(arbolaleatorio) (poblacion (- n 1)))))))
+\end{verbatim}
+\pagebreak
 \section{Problemas encontrados}
 \section{Conclusiones}
 
