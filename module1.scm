@@ -64,7 +64,7 @@
 ;;Dominio: archivo con los puntos  x 
 ;;Codominio: lista con los puntos x del archivo
 (define f1-x
- (call-with-input-file "f1_x.txt"
+ (call-with-input-file "Puntos/f1_x.txt"
   (lambda (p)
     (let f ((x (read p)))
       (if (eof-object? x )
@@ -74,7 +74,7 @@
 ;;Dominio: archivo con los puntos  y 
 ;;Codominio: lista con los puntos y del archivo
 (define f1-y
- (call-with-input-file "f1_y.txt"
+ (call-with-input-file "Puntos/f1_y.txt"
   (lambda (p)
     (let f ((x (read p)))
       (if (eof-object? x )
@@ -84,7 +84,70 @@
 ;;Dominio: archivo con los puntos  z 
 ;;Codominio: lista con los puntos z del archivo
 (define f1-z
- (call-with-input-file "f1_z.txt"
+ (call-with-input-file "Puntos/f1_z.txt"
+  (lambda (p)
+    (let f ((x (read p)))
+      (if (eof-object? x )
+          '()
+          (cons x (f (read p))))))))
+
+
+;;Dominio: archivo con los puntos  x 
+;;Codominio: lista con los puntos x del archivo
+(define f2-x
+ (call-with-input-file "Puntos/f2_x.txt"
+  (lambda (p)
+    (let f ((x (read p)))
+      (if (eof-object? x )
+          '()
+          (cons x (f (read p))))))))
+
+;;Dominio: archivo con los puntos  y 
+;;Codominio: lista con los puntos y del archivo
+(define f2-y
+ (call-with-input-file "Puntos/f2_y.txt"
+  (lambda (p)
+    (let f ((x (read p)))
+      (if (eof-object? x )
+          '()
+          (cons x (f (read p))))))))
+
+;;Dominio: archivo con los puntos  z 
+;;Codominio: lista con los puntos z del archivo
+(define f2-z
+ (call-with-input-file "Puntos/f2_z.txt"
+  (lambda (p)
+    (let f ((x (read p)))
+      (if (eof-object? x )
+          '()
+          (cons x (f (read p))))))))
+
+
+
+;;Dominio: archivo con los puntos  x 
+;;Codominio: lista con los puntos x del archivo
+(define f3-x
+ (call-with-input-file "Puntos/f3_x.txt"
+  (lambda (p)
+    (let f ((x (read p)))
+      (if (eof-object? x )
+          '()
+          (cons x (f (read p))))))))
+
+;;Dominio: archivo con los puntos  y 
+;;Codominio: lista con los puntos y del archivo
+(define f3-y
+ (call-with-input-file "Puntos/f3_y.txt"
+  (lambda (p)
+    (let f ((x (read p)))
+      (if (eof-object? x )
+          '()
+          (cons x (f (read p))))))))
+
+;;Dominio: archivo con los puntos  z 
+;;Codominio: lista con los puntos z del archivo
+(define f3-z
+ (call-with-input-file "Puntos/f3_z.txt"
   (lambda (p)
     (let f ((x (read p)))
       (if (eof-object? x )
