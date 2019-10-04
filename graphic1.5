@@ -1,0 +1,27 @@
+#lang racket
+
+(require plot)
+
+(define xz '(6 6 19 18 6 7 2 7))
+(define yz '(10 9 9 19 5 18 4 16))
+(define zz '(-64 -45 280 -37 11 -275 -12 -207))
+(define arboll  '(+ (- y (+ y (+ (log x 47) y))) 100))
+
+
+;Dominio: arboles binarios de expresion
+;COdominio: prepara la expresion para graficar
+(define prepara
+  (lambda (arbol)
+    (list (cons 'lambda (cons '(x y) (list arbol))))))
+
+
+;Dominio: arboles de expresion binarios, lista de x, lista de y y lista de y de igual tamano
+;Codominio: grafica la expresion y los puntos (x, y, z)
+(define graficar
+  (lambda (arbol xs ys zs)
+    (plot3d (list (surface3d  (eval (car (prepara arbol)))  (- 100) 100 (- 100) 100)
+                  (points3d (map vector xs ys zs) #:color 3 #:sym 'fullcircle5)))))
+
+
+
+
