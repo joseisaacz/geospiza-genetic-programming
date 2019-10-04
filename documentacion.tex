@@ -51,12 +51,34 @@ II CICLO\\
 \tableofcontents
 \pagebreak
 \section{Introducción}
-	Este proyecto que tiene el objetivo de que el equipo de desarrollo del mismo conozca el paradigma de programación funcional, además de conocer un nuevo concepto que son los algoritmos genéticos.\\
-	El profesor presentó el problema de encontrar utilizando las técnicas de algoritmos géneticos, las funciones que cumplieran que al ser evaluadas con distintos valores de x y se acercaran lo máximo posible a los z dados en la tripletas de que el profesor nos facilitó.\\
-	Las técnicas de algoritmos genéticos utilizadas son las básicas consideradas en este tipo de programación. El problema se enfretó de la manera que se le llamaría generacional con elitismo.\\
-	Los 
+\bigskip
+\bigskip 
+\bigskip 
+\bigskip 
+	Este proyecto que tiene el objetivo, de que, el equipo de desarrollo conozca el paradigma de programación funcional, además de conocer un nuevos conceptos que son los algoritmos genéticos.\\\\
+	El profesor presentó el problema de encontrar utilizando las técnicas de algoritmos géneticos, las funciones que cumplieran que al ser evaluadas con distintos valores de x y se acercaran lo máximo posible a los z dados en la tripletas de que el profesor nos facilitó, estas tripletas, son puntos por los que la función original pasa, de forma que mediante la técnicas de algoritmos genéticos se intenta llegar aproimar a esa función.\\\\
+	Las técnicas de algoritmos genéticos utilizadas son las básicas consideradas en este tipo de programación. El problema se enfretó de la manera que se le llamaría por la teoría de algoritmos genéticos, generacional con elitismo. El elitismo es la técnica en la que el mejor individuo de la población pasa a la siguiente generación.\\\\
+	También en el documento se describirán los distintos problemas enfrentó durante el desarrollo del proyecto, las que comúnmente  están relacionadas con el paradigma, ya que la formación del equipo de desarrollo se da en paradigmas en los que es común el uso de variables y constantes, lo que no es común utilizar en el paradigma funcional, además de que el también el lenguaje de programación que se utilizó puede llegar a ser complicado si todavía no se posee el $"pensamiento$  $funcional"$ que el profesor recomendó desarrollar para el uso de este lenguaje de programación.\\\\
+	El lenguaje de programción utilizado en el desarrollo de este proyecto fue Scheme, el cuál es un subconjunto de el lenguaje de programación LISP; segundo lenguaje de programación (1958); Scheme fue desarrollado en el MIT (Massachusetts Institute of Technology) , en este lenguaje se desarrolló la mayoría de las funciones de algoritmos genéticos, además fue necesario la utilización de ciertas funciones de racket para la tarea de graficar los de las funciones y los puntos a los que se debía aproximar.\\\\
+	Se dará una especificaión de la solución al problema, donde se describe la forma en la que el equipo de desarrollo atacó la elaboración de las funciones, ya que lo que pasa con este proyecto es que al ser de algoritmos genéticos la solución a la que se desea llegar se logra al poner el programa a correr durante un tiempo considerable para que la aproximación se dé de la mejor manera.\\ 
+\pagebreak
 \section{Descripción del Problema}
- 
+ El problema consiste en que para funciones de 3 dimesiones  $"adivinar"$ la función a partir de puntos que interseca es
+difícil, así que para esto se debe de hacer un proceso automatizado en el que de forma aleatoria se creen funciones para evaluarlas con respecto a los puntos que interseca y de ahí se elija a las mejores para hacer una aproximación más precisa, esto por medio del cruce y la creación de generaciones de individuos.\\\\
+Para esto se puede utilizar varios recursos redes neuronales, o como en esta ocasión se esta utilizando los algortimos genéticos, lo que está basado en la selección natural de Charles Darwin que favorece a el individuo con mejores características. Con esta premisa se puede explicar que ciertos de los conceptos de algoritmos genéticos. Los mismos son los siguinetes, individuo, poblacion, función fitness, cruce, generaciones y elitismo. \\\\
+\begin{itemize}
+\item Individuo: es una estructura de datos, en este caso particular árboles binarios de expresión. \\
+\item Población: un conjunto de individuos.\\
+\item Función Fitness: es un función que $"califica"$ a los individuos de la población y conforme a sus características les otorga mejor o peor calificación. \\
+\item Cruce: es el proceso en el cuál los individuos de una población se cruzan para generar una nueva generación, este cruce está dado de forma aleatoria entre los miembros de la población de la población eso sí con una técnica de selección la cual favorece a los mejor calificación en la función fitness.\\
+\item Generaciones: son el producto de los cruces de las población, entre más generaciones haya se espera que sea más precisa la aproximación a la respuesta correcta.\\
+\item Elitismo: es una técnica utilizada, cuando se resuelve un problema con la metodología generacional, en la cual se asegura la sobrevivencia del mejor individuo haciendo que esté en la siguiente generación para así no perder la buenas caracteristicas del mismo en la siguiente generación. \\
+\end{itemize}
+
+
+
+
+
 
 \section{Especificacion de la solución}
 	 
