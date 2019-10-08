@@ -201,8 +201,11 @@
 
 ;; Dominio:
 ;; Codominio:
-;(define find-best
-;  (lambda (ruleta individuo puntaje)))
+(define find-best
+  (lambda (ruleta best puntaje diferencia)
+    (cond ((null? ruleta) best)
+          ((> (- (cdar ruleta) diferencia) puntaje) (find-best (cdr ruleta) (caar ruleta) (- (cdar ruleta) diferencia) (cdar ruleta)))
+          (else (find-best (cdr ruleta) best puntaje (cdar ruleta))))))
 
 ;; Dominio:
 ;; Codominio:
