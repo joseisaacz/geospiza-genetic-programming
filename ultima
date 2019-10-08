@@ -117,6 +117,8 @@
     (< (random 100) 5)))
 
 
+;; Dominio: Lista con poblacion (arboles de expresion) y dos puntos pertenecientes al eje x y eje y
+;; Codominio: Lista que contiene los arboles de expresion evaluados
 (define eval-poblacion
   (lambda (poblacion x y)
     (map (lambda (n)
@@ -124,16 +126,20 @@
                             (lambda (exn) (random 100000))])
              (evalua n x y))) poblacion)))
 
+;; Dominio: Lista que contiene los arboles de expresion evaluados y el resultado al cual se debe aproximar una funcion
+;; Codominio: Lista que contiene la diferencia del resultado a aproximar con cada elemento evaluado de la poblacion
 (define dif-puntos
   (lambda (L z)
     (map (lambda (zn) (abs (- z zn))) L)))
 
-
+;; Dominio: Lista con poblacion (arboles de expresion)
+;; Codominio: Matriz que contiene la poblacion evaluada con varios puntos a aproximar
 (define f1
   (lambda (poblacion)
     (map (lambda (x y z) (dif-puntos(eval-poblacion poblacion x y) z)) fx fy fz)))
 
-
+;; Dominio: Matrices
+;; Codominio: La transpuesta de la preimagen (otra matriz)
 (define transpuesta
   (lambda (mat)
     (cond ((null? mat) '())
@@ -141,53 +147,65 @@
           (else (cons (map car mat)
                       (transpuesta (map cdr mat)))))))
 
-
+;; Dominio: Lista con poblacion (arboles de expresion)
+;; Codominio: Lista que contiene la suma de la funciones iguales que intentaron aproximarse
 (define f2
   (lambda (poblacion)
     (map (lambda (n) (round n)) (map (lambda (n) (apply + n)) (transpuesta(f1 poblacion))))))
 
-
+;; Dominio: Lista con poblacion (arboles de expresion), Lista que contiene la probabilidad de cada individuo para cruzarse y un acumulado
+;; Codominio: Matriz que contiene los individuos junto a su proporcion para ser escogido 
 (define armar-ruleta
   (lambda (poblacion probas n)
     (cond ((null? poblacion) '())
           ((null? (cdr probas)) (list(list (car poblacion) (+ n (car probas)))))
           (else (cons (list (car poblacion) (+ n (car probas))) (armar-ruleta (cdr poblacion) (cdr probas) (+ n (car probas))))))))
 
-
+;; Dominio: Lista con la suma de la funciones iguales que intentaron aproximarse
+;; Codominio: Lista que contiene la probabilidad de cada individuo para cruzarse
 (define eval-probas
   (lambda (evaluados)
     (map (lambda (n) (* 10 (- 1 (/ n (apply + evaluados))))) evaluados)))
 
-
+;; Dominio: Lista con poblacion (arboles de expresion) y lista con la suma de la funciones iguales que intentaron aproximarse
+;; Codominio: Matriz que contiene los individuos junto a su proporcion para ser escogido
 (define ruleta
   (lambda (poblacion evaluados)
     (armar-ruleta poblacion (eval-probas evaluados) 0)))
 
-
+;; Dominio: Lista con poblacion (arboles de expresion)
+;; Codominio: Matriz que contiene los individuos junto a su proporcion para ser escogido
 (define w-ruleta
   (lambda (poblacion)
     (ruleta poblacion (f2 poblacion))))
 
-
+;; Dominio: Matriz que contiene los individuos junto a su proporcion para ser escogido y numero random
+;; Codominio: Un individuo de la poblacion
 (define seleccion
   (lambda (ruleta random)
     (cond ((< random (car(cdar ruleta))) (caar ruleta))
           (else (seleccion (cdr ruleta) random)))))
 
-
+;; Dominio: Lista con poblacion (arboles de expresion)
+;; Codominio: Un individuo aleatorio de la poblacion
 (define w-seleccion
   (lambda (poblacion)
     (seleccion (w-ruleta poblacion) (random (* 10 (- (length poblacion) 1))))))
 
-
+;; Dominio: Lista con poblacion (arboles de expresion) y la cantidad de elementos de la poblacion
+;; Codominio: Lista con la nueva poblacion (arboles de expresion)
 (define cruzamiento
   (lambda (poblacion tam)
     (cond ((equal? 0 tam) '())
     (else (append (list (cruce (w-seleccion poblacion) (w-seleccion poblacion))) (cruzamiento poblacion (- tam 1)))))))
 
+;; Dominio:
+;; Codominio:
 ;(define find-best
 ;  (lambda (ruleta individuo puntaje)))
 
+;; Dominio:
+;; Codominio:
 (define infinito
   (lambda (poblacion)
     (infinito(w-ruleta (cruzamiento poblacion (length poblacion))))))
