@@ -244,7 +244,7 @@
     (infinito(w-ruleta (cruzamiento poblacion (length poblacion))))))
         
 
-    ;;(map (lambda (zn) (abs (- z zn))) L)))
+  ;;(map (lambda (zn) (abs (- z zn))) L)))
 
 (define f
   (lambda (Lx Ly Lz poblacion)
