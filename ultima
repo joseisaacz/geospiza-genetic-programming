@@ -131,7 +131,8 @@
 (define dif-puntos
   (lambda (L z)
     (map (lambda (zn)
-           (cond ((real? zn) (abs (- z zn)))
+           (cond ((equal? +inf.0 zn) (random 100000))
+                 ((real? zn) (abs (- z zn)))
                  (else (random 100000)))) L)))
 
 ;; Dominio: Lista con poblacion (arboles de expresion)
@@ -153,7 +154,7 @@
 ;; Codominio: Lista que contiene la suma de la funciones iguales que intentaron aproximarse
 (define f2
   (lambda (poblacion)
-    (map (lambda (n) (round n)) (map (lambda (n) (apply + n)) (transpuesta(f1 poblacion))))))
+    (map (lambda (n) (round n)) (map (lambda (n) (apply + n)) (transpuesta (f1 poblacion))))))
 
 ;; Dominio: Lista con poblacion (arboles de expresion), Lista que contiene la probabilidad de cada individuo para cruzarse y un acumulado
 ;; Codominio: Matriz que contiene los individuos junto a su proporcion para ser escogido 
@@ -179,7 +180,7 @@
 ;; Codominio: Matriz que contiene los individuos junto a su proporcion para ser escogido
 (define w-ruleta
   (lambda (poblacion lf2)
-    (ruleta poblacion (f2 poblacion))))
+    (ruleta poblacion lf2)))
 
 ;; Dominio: Matriz que contiene los individuos junto a su proporcion para ser escogido y numero random
 ;; Codominio: Un individuo de la poblacion
@@ -191,15 +192,20 @@
 ;; Dominio: Lista con poblacion (arboles de expresion)
 ;; Codominio: Un individuo aleatorio de la poblacion
 (define w-seleccion
-  (lambda (poblacion)
-    (seleccion (w-ruleta poblacion) (random (* 10 (- (length poblacion) 1))))))
+  (lambda (poblacion ruleta)
+    (seleccion ruleta (random (* 10 (- (length poblacion) 1))))))
 
 ;; Dominio: Lista con poblacion (arboles de expresion) y la cantidad de elementos de la poblacion
 ;; Codominio: Lista con la nueva poblacion (arboles de expresion)
 (define cruzamiento
-  (lambda (poblacion tam)
+  (lambda (poblacion tam ruleta)
     (cond ((equal? 0 tam) '())
-    (else (append (list (cruce (w-seleccion poblacion) (w-seleccion poblacion))) (cruzamiento poblacion (- tam 1)))))))
+    (else (append (list (cruce (w-seleccion poblacion ruleta) (w-seleccion poblacion ruleta))) (cruzamiento poblacion (- tam 1) ruleta))))))
+
+(define w-cruzamiento
+  (lambda (poblacion ruleta)
+    (cruzamiento poblacion (length poblacion) ruleta)))
+
 
 ;; Dominio: Matriz que contiene los individuos junto a su proporcion para ser escogido, el mejor individuo, el individuo con mayor puntaje
 ;; Codominio: El mejor individuo de la poblacion
@@ -215,11 +221,29 @@
   (lambda (ruleta)
     (find-best ruleta '() 0 0)))
 
+(define magico
+  (lambda (poblacion ruleta)
+    (list (graficar (w-find-best ruleta) fx fy fz)
+    (w-cruzamiento poblacion ruleta))))
+
+(define w-magico
+  (lambda (poblacion)
+    (magico poblacion (w-ruleta poblacion (f2 poblacion)))))
+
+(define gen-n
+  (lambda (magico n)
+    (cond ((equal? 0 n) '())
+          (else (cons (car magico) (gen-n (w-magico (cadr magico)) (- n 1)))))))
+
+(define w-gen-n
+  (lambda (poblacion n)
+    (gen-n (w-magico poblacion) n)))
+
 ;; Dominio:
 ;; Codominio:
-(define infinito
+(define prueba-ruleta
   (lambda (poblacion)
-    (infinito(w-ruleta (cruzamiento poblacion (length poblacion))))))
+    (w-ruleta poblacion (f2 poblacion))))
 
 ;Dominio: arboles binarios de expresion
 ;COdominio: prepara la expresion para graficar
@@ -233,4 +257,3 @@
     (define exp (car (prepara arbol)))
     (plot3d (list (surface3d  (eval exp)  (- 100) 100 (- 100) 100)
                   (points3d (map vector xs ys zs) #:color 3 #:sym 'fullcircle5)))))
-        
