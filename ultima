@@ -130,7 +130,9 @@
 ;; Codominio: Lista que contiene la diferencia del resultado a aproximar con cada elemento evaluado de la poblacion
 (define dif-puntos
   (lambda (L z)
-    (map (lambda (zn) (abs (- z zn))) L)))
+    (map (lambda (zn)
+           (cond ((real? zn) (abs (- z zn)))
+                 (else (random 100000)))) L)))
 
 ;; Dominio: Lista con poblacion (arboles de expresion)
 ;; Codominio: Matriz que contiene la poblacion evaluada con varios puntos a aproximar
@@ -176,7 +178,7 @@
 ;; Dominio: Lista con poblacion (arboles de expresion)
 ;; Codominio: Matriz que contiene los individuos junto a su proporcion para ser escogido
 (define w-ruleta
-  (lambda (poblacion)
+  (lambda (poblacion lf2)
     (ruleta poblacion (f2 poblacion))))
 
 ;; Dominio: Matriz que contiene los individuos junto a su proporcion para ser escogido y numero random
@@ -199,13 +201,19 @@
     (cond ((equal? 0 tam) '())
     (else (append (list (cruce (w-seleccion poblacion) (w-seleccion poblacion))) (cruzamiento poblacion (- tam 1)))))))
 
-;; Dominio:
-;; Codominio:
+;; Dominio: Matriz que contiene los individuos junto a su proporcion para ser escogido, el mejor individuo, el individuo con mayor puntaje
+;; Codominio: El mejor individuo de la poblacion
 (define find-best
-  (lambda (ruleta best puntaje diferencia)
-    (cond ((null? ruleta) best)
-          ((> (- (cdar ruleta) diferencia) puntaje) (find-best (cdr ruleta) (caar ruleta) (- (cdar ruleta) diferencia) (cdar ruleta)))
-          (else (find-best (cdr ruleta) best puntaje (cdar ruleta))))))
+  (lambda (rul best puntaje diferencia)
+    (cond ((null? rul) best)
+          ((> (- (cadar rul) diferencia) puntaje) (find-best (cdr rul) (caar rul) (- (cadar rul) diferencia) (cadar rul)))
+          (else (find-best (cdr rul) best puntaje (cadar rul))))))
+
+;; Dominio: Matriz que contiene los individuos junto a su proporcion para ser escogido
+;; Codominio: El mejor individuo de la poblacion
+(define w-find-best
+  (lambda (ruleta)
+    (find-best ruleta '() 0 0)))
 
 ;; Dominio:
 ;; Codominio:
