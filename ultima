@@ -141,20 +141,11 @@
   (lambda (poblacion)
     (map (lambda (x y z) (dif-puntos(eval-poblacion poblacion x y) z)) fx fy fz)))
 
-;; Dominio: Matrices
-;; Codominio: La transpuesta de la preimagen (otra matriz)
-(define transpuesta
-  (lambda (mat)
-    (cond ((null? mat) '())
-          ((null? (car mat)) '())
-          (else (cons (map car mat)
-                      (transpuesta (map cdr mat)))))))
-
 ;; Dominio: Lista con poblacion (arboles de expresion)
 ;; Codominio: Lista que contiene la suma de la funciones iguales que intentaron aproximarse
 (define f2
   (lambda (poblacion)
-    (map (lambda (n) (round n)) (map (lambda (n) (apply + n)) (transpuesta (f1 poblacion))))))
+    (apply map + (f1 poblacion))))
 
 ;; Dominio: Lista con poblacion (arboles de expresion), Lista que contiene la probabilidad de cada individuo para cruzarse y un acumulado
 ;; Codominio: Matriz que contiene los individuos junto a su proporcion para ser escogido 
@@ -186,7 +177,8 @@
 ;; Codominio: Un individuo de la poblacion
 (define seleccion
   (lambda (ruleta random)
-    (cond ((< random (car(cdar ruleta))) (caar ruleta))
+    (cond ((null? (cdr ruleta)) (caar ruleta))
+          ((< random (car(cdar ruleta))) (caar ruleta))
           (else (seleccion (cdr ruleta) random)))))
 
 ;; Dominio: Lista con poblacion (arboles de expresion)
@@ -231,13 +223,13 @@
     (magico poblacion (w-ruleta poblacion (f2 poblacion)))))
 
 (define gen-n
-  (lambda (magico n)
-    (cond ((equal? 0 n) '())
-          (else (cons (car magico) (gen-n (w-magico (cadr magico)) (- n 1)))))))
+  (lambda (magico n final)
+    (cond ((equal? 0 n) final)
+          (else (gen-n (w-magico (cadr magico)) (- n 1) (cons (car magico) final))))))
 
 (define w-gen-n
   (lambda (poblacion n)
-    (gen-n (w-magico poblacion) n)))
+    (gen-n (w-magico poblacion) n '())))
 
 ;; Dominio:
 ;; Codominio:
