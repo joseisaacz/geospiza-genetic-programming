@@ -18,7 +18,7 @@
   (lambda ()
     (cond ((= (random 2) 0) 'x)
           ((= (random 2) 1)  'y)
-          (else (random 100)))))
+          (else (random 10)))))
 
 ; Dominio: vacio
 ; Codominio: booleano de si el ramdon es menor que 50
