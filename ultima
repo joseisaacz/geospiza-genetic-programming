@@ -69,7 +69,7 @@
 ;;Dominio: archivo con los puntos  x 
 ;;Codominio: lista con los puntos x del archivo
 (define fx
- (call-with-input-file "f1_x.txt"
+ (call-with-input-file "Puntos/f1_x.txt"
   (lambda (p)
     (let f ((x (read p)))
       (if (eof-object? x )
@@ -79,7 +79,7 @@
 ;;Dominio: archivo con los puntos  y 
 ;;Codominio: lista con los puntos y del archivo
 (define fy
- (call-with-input-file "f1_y.txt"
+ (call-with-input-file "Puntos/f1_y.txt"
   (lambda (p)
     (let f ((x (read p)))
       (if (eof-object? x )
@@ -89,7 +89,7 @@
 ;;Dominio: archivo con los puntos  z 
 ;;Codominio: lista con los puntos z del archivo
 (define fz
- (call-with-input-file "f1_z.txt"
+ (call-with-input-file "Puntos/f1_z.txt"
   (lambda (p)
     (let f ((x (read p)))
       (if (eof-object? x )
@@ -252,8 +252,9 @@
     (list (cons 'lambda (cons '(x y) (list arbol))))))
 
 
+;Dominio: arboles de expresion binarios, lista de x, lista de y y lista de y de igual tamano
+;Codominio: grafica la expresion y los puntos (x, y, z)
 (define graficar
   (lambda (arbol xs ys zs)
-    (define exp (car (prepara arbol)))
-    (plot3d (list (surface3d  (eval exp)  (- 100) 100 (- 100) 100)
+    (plot3d (list (surface3d (eval (car (prepara arbol))) (- 100) 100 (- 100) 100 #:label (string-join (map ~a arbol) " ") )
                   (points3d (map vector xs ys zs) #:color 3 #:sym 'fullcircle5)))))
