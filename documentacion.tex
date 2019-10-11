@@ -2,6 +2,8 @@
 \usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
 \usepackage{textcomp}
+\usepackage{graphicx}
+\graphicspath{ {./images/} {./images2/} }
 \usepackage[left=2cm,right=2cm,top=3cm,bottom=2cm]{geometry}
 \author{José Isaac Zeledón Jiménez, Jonathan Estrada Vargas}
 \title{Proyecto 0}
@@ -79,7 +81,7 @@ Se puede apreciar como el problema se vale de la técnicas de selección natural
 Otro detalle que se debe de considerar es la escongencia del tamaño de la población ya que como el profesor explicaba, si la población es muy pequeña existe poco pool genético, lo que genera endogamia, y por el contrario si se da que la población es  muy grande lo que pasa es los individuos de mejores características, si son pocos, se ven opacados porque la población es tan grande que pasan desapercibidos entre toda la población. Por lo que hay que encontrar un tamaño correcto de población, esto es algo que el equipo de desarrollador no sabe, ya que no se encontró una métrica para la escogencia del tamaño de la población.\\\
 \pagebreak
 \section{Especificacion de la solución}
- Este apartado se describirá, la implementación de cada uno de los códigos que generan el programa, para encontrar la solución.\\
+ Este apartado se describirá, la implementación de algunos  de los códigos que generan el programa, para encontrar la solución.\\
 Por recomendación del profesor, la solución se separó en pequeñas funciones, que cumplen con una tarea específica.\\\\
 En la especificación del proyecto, se dice que los individuos de la población (árboles binarios de expresión) y que los operadores que pueden llegar a formar la expresiones son los siguientes: $(+$ $-$ $/$ $*$ $expt$ $log)$. Por lo que siguiente función es para escoger uno de los operadores de forma aleatoria.  
 \begin{verbatim}
@@ -127,16 +129,104 @@ La siguiente función es la que crea la población inicial con la que se inicia 
           (else
           (cons(arbolaleatorio) (poblacion (- n 1)))))))
 \end{verbatim}
-
+Corriendo la f2 se logró los sigueintes resultados con un número de 9 generaciones y una población de 20 indiciduos se encontró los siguientes resultados.\\
+\begin{center}
+\includegraphics[width=5cm, height=5cm]{f1-1}
+\end{center}
+\begin{center}
+\includegraphics[width=5cm, height=5cm]{f1-2}
+\end{center}
+\begin{center}
+\includegraphics[width=5cm, height=5cm]{f1-3}
+\end{center}
+\begin{center}
+\includegraphics[width=5cm, height=5cm]{f1-4}
+\end{center}
+\begin{center}
+\includegraphics[width=5cm, height=5cm]{f1-5}
+\end{center}
+\begin{center}
+\includegraphics[width=5cm, height=5cm]{f1-6}
+\end{center}
+\begin{center}
+\includegraphics[width=5cm, height=5cm]{f1-7}
+\end{center}
+\begin{center}
+\includegraphics[width=5cm, height=5cm]{f1-8}
+\end{center}
+\begin{center}
+\includegraphics[width=5cm, height=5cm]{f1-9}
+\end{center}
+Corriendo la f3 se logró los sigueintes resultados con un número de 20 generaciones y una población de 20 individuos se encontró los sigueintes resultados.\\
+\begin{center}
+\includegraphics[width=5cm, height=5cm]{19}
+\end{center}
+En ciertas ocasiones se presentaba el problema en el que no se graficaba la función.\\
+\begin{center}
+\includegraphics[width=5cm, height=5cm]{18}
+\end{center}
+Pero podemos apreciar que en la función siguiente ya es visible la grafica de la función
+\begin{center}
+\includegraphics[width=5cm, height=5cm]{17}
+\end{center}
+\begin{center}
+\includegraphics[width=5cm, height=5cm]{16}
+\end{center}
+\begin{center}
+\includegraphics[width=5cm, height=5cm]{15}
+\end{center}
+\begin{center}
+\includegraphics[width=5cm, height=5cm]{14}
+\end{center}
+\begin{center}
+\includegraphics[width=5cm, height=5cm]{13}
+\begin{center}
+\includegraphics[width=5cm, height=5cm]{12}
+\end{center}
+\begin{center}
+\includegraphics[width=5cm, height=5cm]{11}
+\end{center}
+En cada una de las imágenes se puede apreciar a el mejor individuo de cada generación.\\
+\begin{center}
+\includegraphics[width=5cm, height=5cm]{10}
+\end{center}
+\begin{center}
+\includegraphics[width=5cm, height=5cm]{9}
+\end{center}
+\begin{center}
+\includegraphics[width=5cm, height=5cm]{8}
+\end{center}
+\begin{center}
+\includegraphics[width=5cm, height=5cm]{7}
+\end{center}
+\begin{center}
+\includegraphics[width=5cm, height=5cm]{6}
+\end{center}
+\begin{center}
+\includegraphics[width=5cm, height=5cm]{5}
+\end{center}
+\begin{center}
+\includegraphics[width=5cm, height=5cm]{4}
+\end{center}
+\begin{center}
+\includegraphics[width=5cm, height=5cm]{3}
+\end{center}
+\begin{center}
+\includegraphics[width=5cm, height=5cm]{2}
+\end{center}
+\begin{center}
+\includegraphics[width=5cm, height=5cm]{1}
+\end{center}
+\end{center}
 \pagebreak
 \section{Problemas encontrados}
-Durante el desarrollo de un proyecto nunca se está libre de dificultades algunas de las que se encontró en el desarrollo de este fueron el tiempo que se dio para la entrega, ya que ciertas implementaciones eran difíciles de pensar. \\
+Durante el desarrollo de un proyecto nunca se está libre de dificultades algunas de las que se encontró en el desarrollo de este fue el paradigma de programación, ya que ciertas implementaciones eran difíciles de pensar en el paradigma funcional, ya que se está acostumbrado a utilizar el paradigma orientado a objetos. \\
 La implementación de ciertos conceptos de algortimos genéticos
 como el individuo (estructuras de datos), y la seleción aleatoria de los individuos para el cruce de los mismos.\\
-Además de la implementación de la función fitness la cual se implementa sobre los individuos y que sin ella la evolución de las generaciones no sería posible.\\
+Además de la implementación de la función fitness la cual se evalua sobre los individuos y que sin ella la evolución de las generaciones no sería posible.\\
 Estos problemas de implementación encontrados dificultó el tiempo para dedicar a que los algoritmos genéticos corrieran y ver la evolución de la generaciones con respecto al tiempo.\\
 \section{Conclusiones}
-	Con respecto a la evolución de las generaciones con conforme a las funciones no se puede dar una opinión concreta ya que, poner a correr el programa no fue una tarea posible.\\
+	Con respecto a la evolución de las generaciones con conforme a las funciones se posee una opinión reservada ya que debido a limitaciones de hardware se debió de limitar la cantidad de las generaciones ya que sino la visualización de la gráficas no era algo posible, además de que el programa dejaba de funcionar al correr durante mucho tiempo.\\
 	En general podemos decir que el aprendizaje sobre los conceptos y aplicaciones de los algoritmos genéticos es bueno y además se puede envidenciar que los intengrantes del equipo desarrollador nos poseían conocimiento alguno en lo que a este tema se refiere.\\
 	Se puede afirmar que luego se pondrá a correr el programa para ver de que forma evolucionan las funciones resultantes de los cruces, además de si existe un estancamiento en lo que se refiere a la funcion de evaluación concierne.\\
 \end{document}
