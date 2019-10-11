@@ -8,7 +8,6 @@
   (lambda ()
   (list-ref '(+ - / * expt log) (random 6))))
 
-
 ;;Dominio: arboles binarios de expresion y numeros a b
 ;;Codominio: expresion evaluada con a b
 (define evalua
@@ -29,13 +28,11 @@
   (lambda ()
     (< (random 100) 50 )))
 
-
 ;dominio: vacio
 ;codominio: de forma aleatorio se forma un arbol de expresion 
 (define arbolaleatorio
   (lambda()
     (list (random-op) (arbol2) (arbol2))))
-
 
 (define arbol2
   (lambda()
@@ -54,17 +51,6 @@
     (cond ((zero? n) '())
           (else
           (cons(arbolaleatorio) (poblacion (- n 1)))))))
-
-
-;;(let ((p (open-input-file "f1.txt")))
-;;  (let f ((x (read p)))
-;;    (if (eof-object? x)
-;;        (begin
-;;          (close-input-port p)
-;;          '())
-;;        (cons x (f (read p))))))
-
-
 
 ;;Dominio: archivo con los puntos  x 
 ;;Codominio: lista con los puntos x del archivo
@@ -96,7 +82,6 @@
           '()
           (cons x (f (read p))))))))
 
-
 ;Dominio: 2 arboles de expresion
 ;Codominio: el cruce de los 2 arboles
 (define cruce
@@ -115,7 +100,6 @@
 (define mutacion?
   (lambda ()
     (< (random 100) 5)))
-
 
 ;; Dominio: Lista con poblacion (arboles de expresion) y dos puntos pertenecientes al eje x y eje y
 ;; Codominio: Lista que contiene los arboles de expresion evaluados
@@ -167,12 +151,6 @@
   (lambda (poblacion evaluados)
     (armar-ruleta poblacion (eval-probas evaluados) 0)))
 
-;; Dominio: Lista con poblacion (arboles de expresion) y lista con la suma de la funciones iguales que intentaron aproximarse
-;; Codominio: Matriz que contiene los individuos junto a su proporcion para ser escogido
-;(define w-ruleta
-;  (lambda (poblacion lf2)
-;    (ruleta poblacion lf2)))
-
 ;; Dominio: Matriz que contiene los individuos junto a su proporcion para ser escogido y numero random
 ;; Codominio: Un individuo de la poblacion
 (define seleccion
@@ -181,25 +159,15 @@
           ((< random (car(cdar ruleta))) (caar ruleta))
           (else (seleccion (cdr ruleta) random)))))
 
-;; Dominio: Lista con poblacion (arboles de expresion) y matriz con individuos junto a su proporcion para ser escogido
-;; Codominio: Un individuo aleatorio de la poblacion
-(define w-seleccion
-  (lambda (ruleta)
-    (seleccion ruleta (random (* 10 (- (length ruleta) 1))))))
-
-;; Dominio: Lista con poblacion (arboles de expresion), la cantidad de elementos de la poblacion y matriz con individuos junto a su proporcion para ser escogido
+;; Dominio: Dos veces la cantidad de elementos de la poblacion y matriz con individuos junto a su proporcion para ser escogido
 ;; Codominio: Lista con la nueva poblacion (arboles de expresion)
 (define cruzamiento
-  (lambda (tam ruleta)
+  (lambda (tam-f tam ruleta)
     (cond ((equal? 0 tam) '())
-    (else (append (list (cruce (w-seleccion ruleta) (w-seleccion ruleta))) (cruzamiento (- tam 1) ruleta))))))
-
-;; Dominio: Lista con poblacion (arboles de expresion) y matriz con individuos junto a su proporcion para ser escogido
-;; Codominio: Lista con la nueva poblacion (arboles de expresion)
-(define w-cruzamiento
-  (lambda (ruleta)
-    (cruzamiento (length ruleta) ruleta)))
-
+    (else (append (list (cruce
+                         (seleccion ruleta (random (* 10 (- tam-f 1))))
+                         (seleccion ruleta (random (* 10 (- tam-f 1))))))
+                  (cruzamiento tam-f (- tam 1) ruleta))))))
 
 ;; Dominio: Matriz que contiene los individuos junto a su proporcion para ser escogido, el mejor individuo, el individuo con mayor puntaje
 ;; Codominio: El mejor individuo de la poblacion
@@ -209,30 +177,28 @@
           ((> (- (cadar rul) diferencia) puntaje) (find-best (cdr rul) (caar rul) (- (cadar rul) diferencia) (cadar rul)))
           (else (find-best (cdr rul) best puntaje (cadar rul))))))
 
-;; Dominio: Matriz que contiene los individuos junto a su proporcion para ser escogido
-;; Codominio: El mejor individuo de la poblacion
-(define w-find-best
-  (lambda (ruleta)
-    (find-best ruleta '() 0 0)))
-
-;; Dominio: Lista con poblacion (arboles de expresion) y matriz con individuos junto a su proporcion para ser escogido
-;; Codominio: Lista con la grafica del mejor elemento de la poblacion y la siguiente generacion para cruzar
+;; Dominio: Matriz con individuos junto a su proporcion para ser escogido
+;; Codominio: Lista que contiene el grafico del mejor elemento de la poblacion con la siguiente generacion para cruzar
 (define magico
   (lambda (ruleta)
-    (list (graficar (w-find-best ruleta) fx fy fz)
-    (w-cruzamiento ruleta))))
+    (list (graficar (find-best ruleta '() 0 0) fx fy fz)
+    (cruzamiento (length ruleta) (length ruleta) ruleta))))
 
 ;; Dominio: Lista con poblacion (arboles de expresion)
+;; Codominio: Lista que contiene el grafico del mejor elemento de la poblacion con la siguiente generacion para cruzar
 (define w-magico
   (lambda (poblacion)
     (magico (ruleta poblacion (f2 poblacion)))))
 
+;; Dominio: Lista que contiene el grafico del mejor elemento de la poblacion con la siguiente generacion para cruzar, la cantidad de generaciones a cruzar y el acumulado de graficos
+;; Codominio: Lista que contiene todos los graficos con el mejor elementos
 (define gen-n
   (lambda (magico n final)
     (cond ((equal? 0 n) final)
           (else (gen-n (w-magico (cadr magico)) (- n 1) (cons (car magico) final))))))
 
 ;; Dominio: Lista con poblacion (arboles de expresion) y la cantidad de generaciones a cruzar
+;; Codominio: Lista que contiene todos los graficos con el mejor elementos
 (define w-gen-n
   (lambda (poblacion n)
     (gen-n (w-magico poblacion) n '())))
@@ -242,7 +208,6 @@
 (define prepara
   (lambda (arbol)
     (list (cons 'lambda (cons '(x y) (list arbol))))))
-
 
 ;Dominio: arboles de expresion binarios, lista de x, lista de y y lista de y de igual tamano
 ;Codominio: grafica la expresion y los puntos (x, y, z)
