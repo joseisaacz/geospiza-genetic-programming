@@ -19,7 +19,7 @@
 ;Codominio: grafica la expresion y los puntos (x, y, z)
 (define graficar
   (lambda (arbol xs ys zs)
-    (plot3d (list (surface3d  (eval (car (prepara arbol)))  (- 100) 100 (- 100) 100)
+    (plot3d (list (surface3d  (eval (car (prepara arbol)))  (- 100) 100 (- 100) 100 #:label (string-join (map ~a arbol) " ") )
                   (points3d (map vector xs ys zs) #:color 3 #:sym 'fullcircle5)))))
 
 

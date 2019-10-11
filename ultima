@@ -69,7 +69,7 @@
 ;;Dominio: archivo con los puntos  x 
 ;;Codominio: lista con los puntos x del archivo
 (define fx
- (call-with-input-file "Puntos/f1_x.txt"
+ (call-with-input-file "Puntos/f2_x.txt"
   (lambda (p)
     (let f ((x (read p)))
       (if (eof-object? x )
@@ -79,7 +79,7 @@
 ;;Dominio: archivo con los puntos  y 
 ;;Codominio: lista con los puntos y del archivo
 (define fy
- (call-with-input-file "Puntos/f1_y.txt"
+ (call-with-input-file "Puntos/f2_y.txt"
   (lambda (p)
     (let f ((x (read p)))
       (if (eof-object? x )
@@ -89,7 +89,7 @@
 ;;Dominio: archivo con los puntos  z 
 ;;Codominio: lista con los puntos z del archivo
 (define fz
- (call-with-input-file "Puntos/f1_z.txt"
+ (call-with-input-file "Puntos/f2_z.txt"
   (lambda (p)
     (let f ((x (read p)))
       (if (eof-object? x )
